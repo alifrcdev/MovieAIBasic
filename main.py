@@ -1,5 +1,6 @@
 from libs import inputs
 from libs import movieManager
+from libs import table
 from libs import userManager
 
 username = inputs.getString("Enter your username: ")
@@ -14,6 +15,14 @@ for i in movies.getMovies():
 
 user.fixGenres(movies)
 
+data = []
+
 for i in movies.sort(user.getGenreRatings()):
     if not user.didWatchMovie(i[1]):
         print(movies.getNameFromID(i[1]))
+        data.append([i[1], movies.getNameFromID(i[1])])
+
+table.printTable("Select Movie To Watch", ["Id", "Movie"], data)
+movieNo = inputs.getSafeInt("Enter movie no: ")
+
+liked = inputs.getSafeStrBool("Did you like the movie? (True/False)")

@@ -48,5 +48,4 @@ class UserManager:
         for i in movieManager.getGenres():
             i = movieManager.getGenreFromGenreID(i)
             if not i in self.genreRating:
-                print(i)
                 self.genreRating[i] = 0

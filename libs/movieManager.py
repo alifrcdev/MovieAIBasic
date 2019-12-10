@@ -1,5 +1,7 @@
 import csv
+
 from . import helpers
+
 
 class MovieManager:
     movies = {}
@@ -35,12 +37,12 @@ class MovieManager:
         return self.genres[genreID]
 
     def sort(self, userGenreRatings):
-        ratings = {}
+        ratings = []
 
-        a = 0
         for i in self.movies:
-            ratings[a] = [int(self.getRatingFromID(i[0])) + sum([userGenreRatings[x] for x in self.getGenresFromID(i[0])]), i[0]]
-            a=a+1
+            ratings.append(
+                [int(self.getRatingFromID(i[0])) * sum([userGenreRatings[x] for x in self.getGenresFromID(i[0])]),
+                 i[0]])
 
         helpers.bubbleSort(ratings)
 

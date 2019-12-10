@@ -10,5 +10,5 @@ def bubbleSort(arr):
             # traverse the array from 0 to n-i-1
             # Swap if the element found is greater
             # than the next element
-            if arr[j][0] > arr[j + 1][0]:
+            if arr[j][0] < arr[j + 1][0]:
                 arr[j], arr[j + 1] = arr[j + 1], arr[j]
