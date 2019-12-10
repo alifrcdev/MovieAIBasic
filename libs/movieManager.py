@@ -47,3 +47,7 @@ class MovieManager:
         helpers.bubbleSort(ratings)
 
         return ratings
+
+    def unload(self):
+        self.movies.clear()
+        self.genres.clear()

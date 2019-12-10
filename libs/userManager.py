@@ -1,5 +1,5 @@
 import csv
-
+import io
 
 class UserManager:
     userMovies = {}
@@ -9,7 +9,7 @@ class UserManager:
 
     def __init__(self, filename):
         try:
-            self.file = open(filename)
+            self.file = open(filename, "r+")
             csv_reader = csv.reader(self.file, delimiter=',')
             for row in csv_reader:
                 self.userMovies[row[0]] = row[1]
@@ -28,7 +28,7 @@ class UserManager:
 
     def isMovieLiked(self, movieID):
         if movieID in self.userMovies:
-            return self.userMovies[movieID]
+            return self.userMovies[movieID][1] == "True"
         else:
             return None
 
@@ -49,3 +49,12 @@ class UserManager:
             i = movieManager.getGenreFromGenreID(i)
             if not i in self.genreRating:
                 self.genreRating[i] = 0
+
+    def watched(self, movieId, liked):
+        self.file.seek(0, io.SEEK_END)
+        self.file.write(str(movieId) + "," + ("True" if liked == "yes" else "False") + "\n")
+
+    def unload(self):
+        self.file.close()
+        self.genreRating.clear()
+        self.userMovies.clear()

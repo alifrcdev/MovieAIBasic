@@ -12,3 +12,11 @@ def bubbleSort(arr):
             # than the next element
             if arr[j][0] < arr[j + 1][0]:
                 arr[j], arr[j + 1] = arr[j + 1], arr[j]
+
+
+def column(matrix, i):
+    return [row[i] for row in matrix]
+
+
+def columnsAfter(matrix, i):
+    return [row[i:] for row in matrix]
