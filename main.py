@@ -1,30 +1,35 @@
 from libs import inputs
 from libs import movieManager
-from libs import userManager
 
-username = inputs.getString("Enter your username: ")
+userMovies = {}
+genreRating = {}
 
 movies = movieManager.MovieManager("data/movies.csv")
 
 while True:
-    user = userManager.UserManager("users/" + username + ".csv")
 
     for i in movies.getMovies():
-        if user.didWatchMovie(i[0]):
+        if i[0] in userMovies:
             for genre in movies.getGenresFromID(i[0]):
-                user.addGenreRating(genre, 2 if user.isMovieLiked(i[0]) else -1)
+                rating = userMovies[i[0]][1] == "True"
+                if genre in genreRating:
+                    genreRating[genre] += rating
+                else:
+                    genreRating[genre] = rating
 
-    user.fixGenres(movies)
+    for i in movies.getGenres():
+        i = movies.getGenreFromGenreID(i)
+        if not i in genreRating:
+            genreRating[i] = 0
 
     data = []
 
-    for i in movies.sort(user.getGenreRatings()):
-        if not user.didWatchMovie(i[1]):
+    for i in movies.sort(genreRating):
+        if not i[1] in userMovies:
             data.append([i[1], movies.getNameFromID(i[1]), ", ".join(movies.getGenresFromID(i[1]))])
 
     if len(data) == 0:
         print("Congrats! You have watched all our films.")
-        user.unload()
         movies.unload()
         data.clear()
         exit(0)
@@ -33,8 +38,4 @@ while True:
 
     liked = inputs.getStringWithOptions("Did you like the movie? (yes/no): ", ["yes", "no"])
 
-    user.watched(data[0][0], liked)
-
-    user.unload()
-
-
+    userMovies[data[0][0]] = liked
