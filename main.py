@@ -1,7 +1,5 @@
-from libs import helpers
 from libs import inputs
 from libs import movieManager
-from libs import table
 from libs import userManager
 
 username = inputs.getString("Enter your username: ")
@@ -22,7 +20,6 @@ while True:
 
     for i in movies.sort(user.getGenreRatings()):
         if not user.didWatchMovie(i[1]):
-            print(movies.getNameFromID(i[1]))
             data.append([i[1], movies.getNameFromID(i[1]), ", ".join(movies.getGenresFromID(i[1]))])
 
     if len(data) == 0:
@@ -32,11 +29,12 @@ while True:
         data.clear()
         exit(0)
 
-    table.printTable("Select Movie To Watch", ["Movie", "Genres"], helpers.columnsAfter(data, 1))
-    movieNo = inputs.getSafeIntWithRange("Enter movie no: ", 1, len(data))
+    print(data[0][1] + ": " + data[0][2])
 
     liked = inputs.getStringWithOptions("Did you like the movie? (yes/no): ", ["yes", "no"])
 
-    user.watched(data[movieNo - 1][0], liked)
+    user.watched(data[0][0], liked)
 
     user.unload()
+
+

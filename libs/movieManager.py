@@ -1,7 +1,5 @@
 import csv
 
-from . import helpers
-
 
 class MovieManager:
     movies = {}
@@ -44,10 +42,25 @@ class MovieManager:
                 [int(self.getRatingFromID(i[0])) * sum([userGenreRatings[x] for x in self.getGenresFromID(i[0])]),
                  i[0]])
 
-        helpers.bubbleSort(ratings)
+        bubbleSort(ratings)
 
         return ratings
 
     def unload(self):
         self.movies.clear()
         self.genres.clear()
+
+def bubbleSort(arr):
+    n = len(arr)
+
+    # Traverse through all array elements
+    for i in range(n):
+
+        # Last i elements are already in place
+        for j in range(0, n - i - 1):
+
+            # traverse the array from 0 to n-i-1
+            # Swap if the element found is greater
+            # than the next element
+            if arr[j][0] < arr[j + 1][0]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
