@@ -61,7 +61,7 @@ while True:
 
     best = []
     best_index = None
-    best_rating = -5.0
+    best_rating = -100.0
     for i in range(len(movies)):
         if i not in userMovies:
             current_rating = movies[i][2] + pow(sum([genreRating[x] for x in movies[i][3]]), 1)
