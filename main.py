@@ -17,7 +17,14 @@ movies = [
     [4, "A Time to Kill", 8, [0, 7, 10]],
     [5, "Amistad", 7, [0, 11]],
     [6, "Amistad 2", 5, [0, 7, 11]],
-    [7, "Anaconda", 5, [1, 2, 12]]
+    [7, "Hababam Sınıfı 1", 5, [5, 6]],
+    [8, "Hababam Sınıfı 2", 8, [5, 6]],
+    [9, "Hababam Sınıfı 3", 3, [5, 6]],
+    [10, "Hababam Sınıfı 4", 6, [5, 6]],
+    [11, "Hababam Sınıfı 5", 2, [5, 6]],
+    [12, "Hababam Sınıfı 6", 7, [5, 6]],
+    [13, "Hababam Sınıfı 7", 9, [5, 6]],
+    [14, "Hababam Sınıfı 8", 1, [5, 6]]
 ]
 
 genres = [
@@ -38,30 +45,31 @@ genres = [
 
 while True:
 
+    for i in range(len(genres)):
+        genreRating[i] = 0
+
     for i in range(len(movies)):
         if i in userMovies:
             for genre in movies[i][3]:
-                rating = 2 if userMovies[i][1] == "yes" else -1
+                rating = 2
+                if userMovies[i] == "no":
+                    rating = -1
                 if genre in genreRating:
                     genreRating[genre] += rating
                 else:
                     genreRating[genre] = rating
 
-    for i in range(len(genres)):
-        if i not in genreRating:
-            genreRating[i] = 0
-
     best = []
-    best_index = 0
-    best_rating = -100000000000000000.0
+    best_index = None
+    best_rating = -5.0
     for i in range(len(movies)):
         if i not in userMovies:
-            current_rating = (movies[i][2] / 10.0) + pow(sum([genreRating[x] for x in movies[i][3]]), 1)
+            current_rating = movies[i][2] + pow(sum([genreRating[x] for x in movies[i][3]]), 1)
             if best_rating < current_rating:
                 best_index = i
                 best_rating = current_rating
 
-    if len(userMovies) == len(movies):
+    if best_index is None:
         print("Congrats! You have watched all our films.")
         exit(0)
 
