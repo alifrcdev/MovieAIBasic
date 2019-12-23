@@ -1,6 +1,6 @@
-def getStringWithOptions(prompt, options, minLength=1):
+def input_opts(prompt, options):
     while True:
-        string = input(prompt)
+        string = input(prompt).lower()
         if string not in options:
             print("Type only " + ", ".join(options) + ".")
         else:
@@ -38,32 +38,28 @@ genres = [
 
 while True:
 
-    for i in movies:
-        if i[0] in userMovies:
-            for genre in [genres[x] for x in movies[i[0]][3]]:
-                rating = userMovies[i[0]][1] == "True"
+    for i in range(len(movies)):
+        if i in userMovies:
+            for genre in movies[i][3]:
+                rating = 2 if userMovies[i][1] == "yes" else -1
                 if genre in genreRating:
                     genreRating[genre] += rating
                 else:
                     genreRating[genre] = rating
 
-    for i in genres:
+    for i in range(len(genres)):
         if i not in genreRating:
             genreRating[i] = 0
 
     best = []
     best_index = 0
-    best_rating = -10
+    best_rating = -100000000000000000.0
     for i in range(len(movies)):
-        if not i in userMovies:
-            current_rating = movies[i][2] + pow(sum([genreRating[x] for x in [genres[x] for x in movies[i][3]]]), 2)
+        if i not in userMovies:
+            current_rating = (movies[i][2] / 10.0) + pow(sum([genreRating[x] for x in movies[i][3]]), 1)
             if best_rating < current_rating:
                 best_index = i
                 best_rating = current_rating
-
-    for i in range(len(movies)):
-        if not i in userMovies:
-            print(movies[i][1] + ": " + ", ".join([genres[x] for x in movies[i][3]]))
 
     if len(userMovies) == len(movies):
         print("Congrats! You have watched all our films.")
@@ -71,6 +67,8 @@ while True:
 
     print(movies[best_index][1] + ": " + ", ".join([genres[x] for x in movies[best_index][3]]))
 
-    liked = getStringWithOptions("Did you like the movie? (yes/no): ", ["yes", "no"])
+    liked = input_opts("Did you like the movie? (yes/no): ", ["yes", "no"])
 
-    userMovies[movies[best_index][0]] = liked
+    userMovies[best_index] = liked
+
+    genreRating.clear()
